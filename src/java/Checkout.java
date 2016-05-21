@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Brett
  */
-public class SesstionTracking extends HttpServlet {
+public class Checkout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,10 +34,10 @@ public class SesstionTracking extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SesstionTracking</title>");            
+            out.println("<title>Servlet Checkout</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SesstionTracking at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Checkout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
