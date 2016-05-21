@@ -146,7 +146,7 @@ public class Products extends HttpServlet {
                             out.println("</tr><tr>");
                                                 
                         out.println("<td class=\"item_cell\">");
-                        out.println("<a href='product_description.php?productID=" + rs.getString("id") + "' >");
+                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
                         out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
                         out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
                         out.println("</a>");

@@ -98,10 +98,10 @@ public class ProductDescription extends HttpServlet {
             String sql;
             sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
             ResultSet rs = stmt.executeQuery(sql);
-           
+         
             //need to advance it to the first row
             rs.next();
-            
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -121,7 +121,7 @@ public class ProductDescription extends HttpServlet {
                 "        <nav>\n" +
                 "         <ul>\n" +
                 "            <li><a href=\"index.html\">Home</a></li>\n" +
-                "            <li><a href=\"products.php\">Products</a></li>\n" +
+                "            <li><a href=\"Products\">Products</a></li>\n" +
                 "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
                 "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
                 "        </ul>\n" +
