@@ -101,7 +101,19 @@
                 max-width:225px; 
             }    
 
+            .viewers{
+                text-align: center;
+                font-size: 25px;
+                padding-top: 25px;
+                padding-bottom: 10px;
+                font-weight: bold;
 
+            }
+                
+            .viewers_count{
+                color: red;
+                font-size: 30px;
+            }
 
             
         

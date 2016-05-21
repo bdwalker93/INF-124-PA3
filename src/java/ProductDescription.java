@@ -144,6 +144,7 @@ public class ProductDescription extends HttpServlet {
             out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Buy It Now!\">");
             out.println(" </form>");
 
+
             // Clean-up environment
             rs.close();
             stmt.close();
@@ -152,6 +153,11 @@ public class ProductDescription extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
             dispatcher.include(request, response);
             
+            
+            //uses the context object to display the number of people viewing this page
+            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">2</span></div>");
+
+                        
             //output the footer
             out.println("  <!--        This is the footer-->\n" +
             "        <footer>\n" +
