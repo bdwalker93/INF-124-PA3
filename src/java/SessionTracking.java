@@ -8,9 +8,17 @@ import com.sun.jmx.remote.internal.ArrayQueue;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Array;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +30,61 @@ import javax.servlet.http.HttpSession;
  * @author Brett
  */
 public class SessionTracking extends HttpServlet {
+    //stores the database connection
+    private Connection conn;
+    
+    //initi function to open db connection
+    @Override
+    public void init(ServletConfig config){
+        try {
+            super.init(config);
+            databaseConnect();
+        } 
+        catch (ServletException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
+    
+    //closes db connection
+    @Override
+    public void destroy(){
+        databaseDisconnect();
+    }
+    
+    private void databaseConnect()
+    {
+      // JDBC driver name and database URL
+        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+
+      //  Database credentials
+        final String USER = "root";
+        final String PASS = "";
+
+        try{
+        // Register JDBC driver
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // Open a connection
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        } 
+        catch (ClassNotFoundException | SQLException ex) {
+         Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+         
+        }
+     
+    }
+    
+    private void databaseDisconnect()
+    {
+        try {
+            conn.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,7 +105,7 @@ public class SessionTracking extends HttpServlet {
         LinkedList<String> visitedIds = new LinkedList<String>();
         String visitedIdsKey = new String("numVisited");
         
-        final int MAX_DISPLAYED = 6;
+        final int MAX_DISPLAYED = 5;
 
         String currentId = request.getParameter("productID");
         //only output visited items if the user has been here before
@@ -64,40 +126,57 @@ public class SessionTracking extends HttpServlet {
         // Set response content type
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        try{
+            // Execute SQL query to get all the watch info from the db
+            Statement stmt = conn.createStatement();
+            String sql;
+            ResultSet rs = null; 
+            
+            out.println("<table align = 'center'>");
+            out.println("<tr>");
+                
+            for(int i = 0; i < visitedIds.size(); i++){
 
-        out.println("<table align = 'center'>");
+                sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
+                rs = stmt.executeQuery(sql);
 
-        out.println("<tr>");
-        for(int i = 0; i < visitedIds.size(); i++){
-            out.println("<td>" + visitedIds.get(i) + "</td>");
-//            out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-//            out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-//            out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
-//            out.println("</a>");
-//            out.println("</td");
+                //need to advance it to the first row
+                rs.next();
+            
+                out.println("<td>");
+                out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                out.println("</a>");
+                out.println("</td>");
 
-        }
-        out.println("</tr>");
-
-
+            }
+             
+            out.println("</tr>");
             out.println("</table>");
             
-            //if this key is already in the list there is nothing to do here
-            if(!visitedIds.contains(new String(currentId)))
-            {
-                out.println("dECISION: " + !visitedIds.contains(new String(currentId)));
-                //handles cycling the list of keys if the max is reached
-                visitedIds.addFirst(currentId);
-
-
-                //dumps a visited if the list is already at 5
-                if(visitedIds.size() >= MAX_DISPLAYED){
-                    visitedIds.removeLast();
-                }
-
-                //sets the attribute
-                session.setAttribute(visitedIdsKey, visitedIds);
+            // Clean-up environment
+            if(rs != null)
+                rs.close();
+            stmt.close();
+        }   
+        catch (SQLException ex) {    
+            Logger.getLogger(SessionTracking.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //logic for determining which products are here
+        if(!visitedIds.contains(new String(currentId)) && !visitedIds.getLast().equals(currentId))
+        {
+            //dumps a visited if the list is already at 5
+            if(visitedIds.size() >= MAX_DISPLAYED){
+                visitedIds.removeLast();
             }
+            //handles cycling the list of keys if the max is reached
+            visitedIds.addFirst(currentId);
+
+            //sets the attribute
+            session.setAttribute(visitedIdsKey, visitedIds);
+        }
         }
 
     }
