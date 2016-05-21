@@ -24,9 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Brett
  */
-public class Products extends HttpServlet {
-
-    //stores the database connection
+public class ProductDescription extends HttpServlet {
+ //stores the database connection
     private Connection conn;
     
     //initi function to open db connection
@@ -81,7 +80,6 @@ public class Products extends HttpServlet {
         }
     }
     
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -95,78 +93,71 @@ public class Products extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+              
+            // Execute SQL query to get all the watch info from the db
+            Statement stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
+            ResultSet rs = stmt.executeQuery(sql);
+         
+            //need to advance it to the first row
+            rs.next();
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-           
-        out.println("<title>Products</title>");            
-        out.println("<meta charset=\"UTF-8\">");            
-        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");            
-        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/products_style.css\">");
-        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
-        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
-                
-        out.println("</head>");
-        out.println("<body>");
+            out.println("<title> " + rs.getString("title") + "</title>");            
+            out.println("<meta charset=\"UTF-8\">");            
+            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");            
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/product_description_style.css\">");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
+            out.println("</head>");
+            out.println("<body>");
 
-        /*BEGINNING OF PAGE*/
-        //nav bar
-        out.println(" <!--        This is the navigator-->\n" +
-            "        <nav>\n" +
-            "         <ul>\n" +
-            "            <li><a href=\"index.html\">Home</a></li>\n" +
-            "            <li><a href=\"products.php\">Products</a></li>\n" +
-            "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-            "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
-            "        </ul>\n" +
-            "        </nav>");
+
+            /*BEGINNING OF PAGE*/
+            //nav bar
+            out.println(" <!--        This is the navigator-->\n" +
+                "        <nav>\n" +
+                "         <ul>\n" +
+                "            <li><a href=\"index.html\">Home</a></li>\n" +
+                "            <li><a href=\"Products\">Products</a></li>\n" +
+                "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
+                "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+                "        </ul>\n" +
+                "        </nav>");
 
             //products display
-           out.println("<h1>Men's Watches</h1>");
-           
-            try{
-                
-                // Execute SQL query to get all the watch info from the db
-                Statement stmt = conn.createStatement();
-                String sql;
-                sql = "SELECT * FROM product_descriptions";
-                ResultSet rs = stmt.executeQuery(sql);
 
-                int count = 0;
-                out.println("<table align = 'center'>");
+            out.println("<h1>" + rs.getString("brand") + " </h1>");
+            out.println("<h2>" + rs.getString("name") + " </h2>");
 
-                // Extract data from result set
-                if (!rs.next()) {                            
-                    out.println("0 results");
-                }
-                else {
-                    out.println("<tr>");
-                    do {
-                        if(count % 3 == 0)
-                            out.println("</tr><tr>");
-                                                
-                        out.println("<td class=\"item_cell\">");
-                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
-                        out.println("</a>");
 
-                        count++;
-                    } while (rs.next());
-                }
-                                    
-                // Clean-up environment
-                rs.close();
-                stmt.close();
-                
-                out.println("</table>");
+            out.println("<img class='product_image' src='" + rs.getString("image_path") + " ' alt='This is an image of the: " + rs.getString("brand") + "  - " + rs.getString("name") + " '>");
 
-            } catch (SQLException ex) {
-                Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
-            }
-           
-                
+            out.println("<div class=\"description_text\">" + rs.getString("description") + "</div>");
+            out.println("<div class=\"specs_text\">Price: $" + rs.getString("price") + " <br>Product ID: #" + rs.getString("id") + " </div>");
+
+            out.println("<form class=\"checkout_button_form\" action=\"Checkout\">");
+             out.println("<input type='hidden' name='productID' value='" + request.getParameter("productID") + "'>");
+            out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Buy It Now!\">");
+            out.println(" </form>");
+
+
+            // Clean-up environment
+            rs.close();
+            stmt.close();
+
+            //including session tracking info (no the reappending of the product id)
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
+            dispatcher.include(request, response);
+            
+            
+            //uses the context object to display the number of people viewing this page
+            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">2</span></div>");
+
+                        
             //output the footer
             out.println("  <!--        This is the footer-->\n" +
             "        <footer>\n" +
@@ -176,9 +167,12 @@ public class Products extends HttpServlet {
             "            <li style=\"float:right;\">Spring 2016</li>\n" +
             "            </ul>\n" +
             "        </footer>");
-            
+
             out.println("</body>");
             out.println("</html>");
+        } 
+        catch (SQLException ex) {
+        Logger.getLogger(ProductDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -195,10 +189,7 @@ public class Products extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
