@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +28,29 @@ public class Products extends HttpServlet {
     //stores the database connection
     private Connection conn;
     
+    //initi function to open db connection
+    @Override
+    public void init(ServletConfig config){
+        try {
+            super.init(config);
+            databaseConnect();
+        } 
+        catch (ServletException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    //closes db connection
+    @Override
+    public void destroy(){
+        databaseDisconnect();
+    }
+    
     private void databaseConnect()
     {
       // JDBC driver name and database URL
-        final String JDBC_DRIVER="com.mysql.jdbc.Driver";  
-        final String DB_URL="jdbc:mysql://localhost";
+        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
 
       //  Database credentials
         final String USER = "root";
@@ -44,6 +65,7 @@ public class Products extends HttpServlet {
         } 
         catch (ClassNotFoundException | SQLException ex) {
          Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+         
         }
      
     }
@@ -84,29 +106,62 @@ public class Products extends HttpServlet {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
                 
-            out.println("</head>");
-            out.println("<body>");
-      
-            /*BEGINNING OF PAGE*/
-            
-            //nav bar
-            out.println(" <!--        This is the navigator-->\n" +
-                "        <nav>\n" +
-                "         <ul>\n" +
-                "            <li><a href=\"index.html\">Home</a></li>\n" +
-                "            <li><a href=\"products.php\">Products</a></li>\n" +
-                "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-                "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
-                "        </ul>\n" +
-                "        </nav>");
-            
+        out.println("</head>");
+        out.println("<body>");
+
+        /*BEGINNING OF PAGE*/
+        //nav bar
+        out.println(" <!--        This is the navigator-->\n" +
+            "        <nav>\n" +
+            "         <ul>\n" +
+            "            <li><a href=\"index.html\">Home</a></li>\n" +
+            "            <li><a href=\"products.php\">Products</a></li>\n" +
+            "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
+            "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+            "        </ul>\n" +
+            "        </nav>");
+
             //products display
            out.println("<h1>Men's Watches</h1>");
            
-            System.out.println("<table align = 'center'>");
+            try{
+                
+                // Execute SQL query to get all the watch info from the db
+                Statement stmt = conn.createStatement();
+                String sql;
+                sql = "SELECT * FROM product_descriptions";
+                ResultSet rs = stmt.executeQuery(sql);
+
+                int count = 0;
+                System.out.println("<table align = 'center'>");
+
+                // Extract data from result set
+                if (!rs.next()) {                            
+                    out.println("0 results");
+                }
+                else {
+                    out.println("<tr>");
+                    do {
+                        out.println("<td class=\"item_cell\">");
+                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + "alt=" + rs.getString("name") + ">  <br> ");
+                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                        out.println("</a>");
+                        if(count % 3 == 0)
+                            out.println("</tr><tr>");
+                        count++;
+                    } while (rs.next());
+                }
+                                    
+                // Clean-up environment
+                rs.close();
+                stmt.close();
+                
+                System.out.println("</table");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            
-            System.out.println("</table");
            
                 
             //output the footer
