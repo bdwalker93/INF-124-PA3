@@ -8,6 +8,10 @@
         <servlet-name>Products</servlet-name>
         <servlet-class>Products</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductDescription</servlet-name>
+        <servlet-class>ProductDescription</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SesstionTracking</servlet-name>
         <url-pattern>/SesstionTracking</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Products</servlet-name>
         <url-pattern>/Products</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDescription</servlet-name>
+        <url-pattern>/ProductDescription</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
