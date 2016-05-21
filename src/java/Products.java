@@ -133,7 +133,7 @@ public class Products extends HttpServlet {
                 ResultSet rs = stmt.executeQuery(sql);
 
                 int count = 0;
-                System.out.println("<table align = 'center'>");
+                out.println("<table align = 'center'>");
 
                 // Extract data from result set
                 if (!rs.next()) {                            
@@ -142,12 +142,15 @@ public class Products extends HttpServlet {
                 else {
                     out.println("<tr>");
                     do {
-                        out.println("<td class=\"item_cell\">");
-                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + "alt=" + rs.getString("name") + ">  <br> ");
-                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
-                        out.println("</a>");
                         if(count % 3 == 0)
                             out.println("</tr><tr>");
+                                                
+                        out.println("<td class=\"item_cell\">");
+                        out.println("<a href='product_description.php?productID=" + rs.getString("id") + "' >");
+                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                        out.println("</a>");
+
                         count++;
                     } while (rs.next());
                 }
@@ -156,7 +159,7 @@ public class Products extends HttpServlet {
                 rs.close();
                 stmt.close();
                 
-                System.out.println("</table");
+                out.println("</table>");
 
             } catch (SQLException ex) {
                 Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
