@@ -62,13 +62,44 @@
                 background-color: #3385ff;
                 font-size: 25px;
             }
-            
+    
             td{
-                border: 1px solid black;
+                height: 300px;
+                width: 225px;
+                text-align: center;
+                /*border: 1px solid black;*/
+
+            }
+
+            th{
+                text-align: left;
+                /*border: 1px solid black;*/
 
             }
             
+            a{
+                text-decoration: none;
+            }
             
+            table{
+                padding-top: 20px;
+            }
+            
+            .visited_image{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 200px; 
+            }
+            
+            .item_cell:hover{
+                background-color:  #cce0ff;
+            }
+            
+            /*this is complicated... you will need to ask me about it*/
+            .item_cell:hover .visited_image{
+                max-width:225px; 
+            }    
 
 
 

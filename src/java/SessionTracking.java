@@ -133,6 +133,12 @@ public class SessionTracking extends HttpServlet {
             ResultSet rs = null; 
             
             out.println("<table align = 'center'>");
+                
+            for(int i = 0; i < visitedIds.size() && i < 2; i++)
+                out.println("<th></th>");
+            
+            out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
+
             out.println("<tr>");
                 
             for(int i = 0; i < visitedIds.size(); i++){
@@ -143,10 +149,10 @@ public class SessionTracking extends HttpServlet {
                 //need to advance it to the first row
                 rs.next();
             
-                out.println("<td>");
+                out.println("<td class=\"item_cell\">");
                 out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
                 out.println("</a>");
                 out.println("</td>");
 
