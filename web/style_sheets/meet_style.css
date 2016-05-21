@@ -1,0 +1,46 @@
+        h1 {
+    text-align: center;
+    font-size: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 30%;
+    margin-right: 30%;
+    background-color: #cce0ff;
+
+    
+    }
+
+     h2 {
+    text-align: center;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    }
+
+    .about {
+    text-align: center;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;    }
+    
+    .focus {
+    text-align: center;
+    font-size: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    }
+
+    .prime {
+    text-align: center;
+    font-weight:bold;
+    font-size: 35px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 30%;
+    margin-right: 30%;}

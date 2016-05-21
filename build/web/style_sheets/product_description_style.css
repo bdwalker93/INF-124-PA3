@@ -1,0 +1,76 @@
+            h1{
+                font-size:  75px;
+                text-align: center;
+                padding-top: 35px;
+                padding-bottom: 35px;
+                margin-left: 20%;
+                margin-right: 20%;
+                background-color: #cce0ff;
+            }
+           
+            h2{
+                font-size:  30px;
+                text-align: center;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                margin-left: 40%;
+                margin-right: 40%;
+                background-color: #cce0ff;
+            }
+            
+            .product_image{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 400px; 
+            }
+            .description_text{
+                /*border: 1px solid black;*/
+                word-wrap: break-word;
+                text-align: center;
+                width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 20px 102px;
+                font-size: 18px;
+                background-color: #cce0ff;
+            }
+            
+            .specs_text{
+                text-align: left;
+                width: 854px;
+                padding: 15px 10px;
+                padding-left: 40px;
+                background-color: #99c2ff;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 20px;
+                font-style: italic;
+
+            }
+            
+            .checkout_button_form{
+                padding: 40px 5px;
+                text-align: center;
+                /*border: 1px solid black;*/
+
+            }
+            
+            .checkout_button{
+                width: 300px;
+                height: 75px;
+                background-color: #3385ff;
+                font-size: 25px;
+            }
+            
+            td{
+                /*border: 1px solid black;*/
+
+            }
+            
+            
+
+
+
+            
+        
