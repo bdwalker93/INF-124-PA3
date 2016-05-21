@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,13 +28,15 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductDescription extends HttpServlet {
  //stores the database connection
     private Connection conn;
+    private int viewerCount;
     
     //initi function to open db connection
     @Override
     public void init(ServletConfig config){
-        try {
-            super.init(config);
+        try { 
+            super.init(config);       
             databaseConnect();
+            
         } 
         catch (ServletException ex) {
             Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
@@ -153,9 +156,12 @@ public class ProductDescription extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
             dispatcher.include(request, response);
             
+            //sets the context interface
             
+            //ServletContext context = getServletContext();
+
             //uses the context object to display the number of people viewing this page
-            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">2</span></div>");
+            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + getServletContext().getInitParameter("viewerCount") + "</span></div>");
 
                         
             //output the footer

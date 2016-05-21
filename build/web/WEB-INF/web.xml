@@ -16,6 +16,10 @@
         <servlet-name>SessionTracking</servlet-name>
         <servlet-class>SessionTracking</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewerTracker</servlet-name>
+        <servlet-class>ViewerTracker</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Products</servlet-name>
         <url-pattern>/Products</url-pattern>
