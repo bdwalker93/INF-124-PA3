@@ -34,10 +34,32 @@ public class Products extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Products</title>");            
+           
+        out.println("<title>Products</title>");            
+        out.println("<meta charset=\"UTF-8\">");            
+        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");            
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/products_style.css\">");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
+                
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Products at " + request.getContextPath() + "</h1>");
+      
+            /*BEGINNING OF PAGE*/
+            
+            //nav bar
+            out.println(" <!--        This is the navigator-->\n" +
+    "        <nav>\n" +
+    "         <ul>\n" +
+    "            <li><a href=\"index.html\">Home</a></li>\n" +
+    "            <li><a href=\"products.php\">Products</a></li>\n" +
+    "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
+    "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+    "        </ul>\n" +
+    "        </nav>");
+            
+            //products display
+
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,6 +78,8 @@ public class Products extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+
     }
 
     /**
