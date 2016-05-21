@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -147,7 +148,10 @@ public class ProductDescription extends HttpServlet {
             rs.close();
             stmt.close();
 
-
+            //including session tracking info (no the reappending of the product id)
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
+            dispatcher.include(request, response);
+            
             //output the footer
             out.println("  <!--        This is the footer-->\n" +
             "        <footer>\n" +

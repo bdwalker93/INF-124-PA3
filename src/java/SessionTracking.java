@@ -4,9 +4,13 @@
  * and open the template in the editor.
  */
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,69 +35,71 @@ public class SessionTracking extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
- // Create a session object if it is already not  created.
-      HttpSession session = request.getSession(true);
-      // Get session creation time.
-      Date createTime = new Date(session.getCreationTime());
-      // Get last access time of this web page.
-      Date lastAccessTime = 
-                        new Date(session.getLastAccessedTime());
-
-      String title = "Welcome Back to my website";
-      Integer visitCount = new Integer(0);
-      String visitCountKey = new String("visitCount");
-      String userIDKey = new String("userID");
-      String userID = new String("ABCD");
-
-      // Check if this is new comer on your web page.
-      if (session.isNew()){
-         title = "Welcome to my website";
-         session.setAttribute(userIDKey, userID);
-      } else {
-         visitCount = (Integer)session.getAttribute(visitCountKey);
-         visitCount = visitCount + 1;
-         userID = (String)session.getAttribute(userIDKey);
-      }
-      session.setAttribute(visitCountKey,  visitCount);
-
-      // Set response content type
-      response.setContentType("text/html");
-      PrintWriter out = response.getWriter();
-
-      String docType =
-      "<!doctype html public \"-//w3c//dtd html 4.0 " +
-      "transitional//en\">\n";
-      out.println(docType +
-                "<html>\n" +
-                "<head><title>" + title + "</title></head>\n" +
-                "<body bgcolor=\"#f0f0f0\">\n" +
-                "<h1 align=\"center\">" + title + "</h1>\n" +
-                 "<h2 align=\"center\">Session Infomation</h2>\n" +
-                "<table border=\"1\" align=\"center\">\n" +
-                "<tr bgcolor=\"#949494\">\n" +
-                "  <th>Session info</th><th>value</th></tr>\n" +
-                "<tr>\n" +
-                "  <td>id</td>\n" +
-                "  <td>" + session.getId() + "</td></tr>\n" +
-                "<tr>\n" +
-                "  <td>Creation Time</td>\n" +
-                "  <td>" + createTime + 
-                "  </td></tr>\n" +
-                "<tr>\n" +
-                "  <td>Time of Last Access</td>\n" +
-                "  <td>" + lastAccessTime + 
-                "  </td></tr>\n" +
-                "<tr>\n" +
-                "  <td>User ID</td>\n" +
-                "  <td>" + userID + 
-                "  </td></tr>\n" +
-                "<tr>\n" +
-                "  <td>Number of visits</td>\n" +
-                "  <td>" + visitCount + "</td></tr>\n" +
-                "</table>\n" +
-                "</body></html>");
         
-    
+        // Create a session object if it is already not  created.
+          HttpSession session = request.getSession(true);
+
+        //stores the names of the last images visited
+        LinkedList<String> visitedIds = new LinkedList<String>();
+        String visitedIdsKey = new String("numVisited");
+        
+        final int MAX_DISPLAYED = 6;
+
+        String currentId = request.getParameter("productID");
+        //only output visited items if the user has been here before
+        if(session.isNew())
+        {
+            //sets the array with the initial item 
+            visitedIds.add(currentId);
+            
+            //sets the attribute with the array
+            session.setAttribute(visitedIdsKey, visitedIds);
+        }
+        else
+        {
+        visitedIds = (LinkedList<String>)session.getAttribute(visitedIdsKey);
+
+
+
+        // Set response content type
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        out.println("<table align = 'center'>");
+
+        out.println("<tr>");
+        for(int i = 0; i < visitedIds.size(); i++){
+            out.println("<td>" + visitedIds.get(i) + "</td>");
+//            out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+//            out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+//            out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+//            out.println("</a>");
+//            out.println("</td");
+
+        }
+        out.println("</tr>");
+
+
+            out.println("</table>");
+            
+            //if this key is already in the list there is nothing to do here
+            if(!visitedIds.contains(new String(currentId)))
+            {
+                out.println("dECISION: " + !visitedIds.contains(new String(currentId)));
+                //handles cycling the list of keys if the max is reached
+                visitedIds.addFirst(currentId);
+
+
+                //dumps a visited if the list is already at 5
+                if(visitedIds.size() >= MAX_DISPLAYED){
+                    visitedIds.removeLast();
+                }
+
+                //sets the attribute
+                session.setAttribute(visitedIdsKey, visitedIds);
+            }
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
