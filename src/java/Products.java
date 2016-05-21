@@ -6,6 +6,11 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +22,43 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Products extends HttpServlet {
 
+    //stores the database connection
+    private Connection conn;
+    
+    private void databaseConnect()
+    {
+      // JDBC driver name and database URL
+        final String JDBC_DRIVER="com.mysql.jdbc.Driver";  
+        final String DB_URL="jdbc:mysql://localhost";
+
+      //  Database credentials
+        final String USER = "root";
+        final String PASS = "";
+
+        try{
+        // Register JDBC driver
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // Open a connection
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        } 
+        catch (ClassNotFoundException | SQLException ex) {
+         Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     
+    }
+    
+    private void databaseDisconnect()
+    {
+        try {
+            conn.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,17 +91,34 @@ public class Products extends HttpServlet {
             
             //nav bar
             out.println(" <!--        This is the navigator-->\n" +
-    "        <nav>\n" +
-    "         <ul>\n" +
-    "            <li><a href=\"index.html\">Home</a></li>\n" +
-    "            <li><a href=\"products.php\">Products</a></li>\n" +
-    "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-    "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
-    "        </ul>\n" +
-    "        </nav>");
+                "        <nav>\n" +
+                "         <ul>\n" +
+                "            <li><a href=\"index.html\">Home</a></li>\n" +
+                "            <li><a href=\"products.php\">Products</a></li>\n" +
+                "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
+                "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+                "        </ul>\n" +
+                "        </nav>");
             
             //products display
-
+           out.println("<h1>Men's Watches</h1>");
+           
+            System.out.println("<table align = 'center'>");
+            
+            
+            System.out.println("</table");
+           
+                
+            //output the footer
+            out.println("  <!--        This is the footer-->\n" +
+            "        <footer>\n" +
+            "            <ul>\n" +
+            "            <li><Div style=\"font-size: 20px;\">University of California, Irvine</div></li>\n" +
+            "            <li><Div style=\"font-size: 20px;\">Informatics 124/ CS 137</div></li>\n" +
+            "            <li style=\"float:right;\">Spring 2016</li>\n" +
+            "            </ul>\n" +
+            "        </footer>");
+            
             out.println("</body>");
             out.println("</html>");
         }
