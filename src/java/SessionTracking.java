@@ -102,7 +102,7 @@ public class SessionTracking extends HttpServlet {
         // Create a session object if it is already not  created.
           HttpSession session = request.getSession(true);
 
-        //stores the names of the last images visited
+          //stores the names of the last images visited
         LinkedList<String> visitedIds = new LinkedList<String>();
         String visitedIdsKey = new String("numVisited");
         
@@ -114,80 +114,85 @@ public class SessionTracking extends HttpServlet {
         {
             //sets the array with the initial item 
             visitedIds.add(currentId);
-            
+
             //sets the attribute with the array
             session.setAttribute(visitedIdsKey, visitedIds);
+            
+            PrintWriter out = response.getWriter();
+            out.println("<div></div>");
+
         }
         else
         {
-        visitedIds = (LinkedList<String>)session.getAttribute(visitedIdsKey);
-
-
-
-        // Set response content type
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        try{
-            Statement stmt; 
-            ResultSet rs;
             
-            synchronized (mutex)
-            {            // Execute SQL query to get all the watch info from the db
-                stmt = conn.createStatement();
-                String sql;
-                rs = null; 
+            visitedIds = (LinkedList<String>)session.getAttribute(visitedIdsKey);
 
-                out.println("<table align = 'center'>");
 
-                for(int i = 0; i < visitedIds.size() && i < 2; i++)
-                    out.println("<th></th>");
 
-                out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
+            // Set response content type
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+            try{
+                Statement stmt; 
+                ResultSet rs;
 
-                out.println("<tr>");
+                synchronized (mutex)
+                {            // Execute SQL query to get all the watch info from the db
+                    stmt = conn.createStatement();
+                    String sql;
+                    rs = null; 
 
-                for(int i = 0; i < visitedIds.size(); i++){
+                    out.println("<table align = 'center'>");
 
-                    sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
-                    rs = stmt.executeQuery(sql);
+                    for(int i = 0; i < visitedIds.size() && i < 2; i++)
+                        out.println("<th></th>");
 
-                    //need to advance it to the first row
-                    rs.next();
+                    out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
 
-                    out.println("<td class=\"item_cell\">");
-                    out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                    out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                    out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
-                    out.println("</a>");
-                    out.println("</td>");
+                    out.println("<tr>");
 
+                    for(int i = 0; i < visitedIds.size(); i++){
+
+                        sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
+                        rs = stmt.executeQuery(sql);
+
+                        //need to advance it to the first row
+                        rs.next();
+
+                        out.println("<td class=\"item_cell\">");
+                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                        out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
+                        out.println("</a>");
+                        out.println("</td>");
+
+                    }
                 }
-            }
-            out.println("</tr>");
-            out.println("</table>");
-            
-            // Clean-up environment
-            if(rs != null)
-                rs.close();
-            stmt.close();
-        }   
-        catch (SQLException ex) {    
-            Logger.getLogger(SessionTracking.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //logic for determining which products are here
-        if(!visitedIds.contains(new String(currentId)) && !visitedIds.getLast().equals(currentId))
-        {
-            //dumps a visited if the list is already at 5
-            if(visitedIds.size() >= MAX_DISPLAYED){
-                visitedIds.removeLast();
-            }
-            //handles cycling the list of keys if the max is reached
-            visitedIds.addFirst(currentId);
+                out.println("</tr>");
+                out.println("</table>");
 
-            //sets the attribute
-            session.setAttribute(visitedIdsKey, visitedIds);
-        }
+                // Clean-up environment
+                if(rs != null)
+                    rs.close();
+                stmt.close();
+            }   
+            catch (SQLException ex) {    
+                Logger.getLogger(SessionTracking.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //logic for determining which products are here
+            if(!visitedIds.contains(new String(currentId)) && !visitedIds.getLast().equals(currentId))
+            {
+                //dumps a visited if the list is already at 5
+                if(visitedIds.size() >= MAX_DISPLAYED){
+                    visitedIds.removeLast();
+                }
+                //handles cycling the list of keys if the max is reached
+                visitedIds.addFirst(currentId);
+
+                //sets the attribute
+                session.setAttribute(visitedIdsKey, visitedIds);
+            }
         }
 
     }

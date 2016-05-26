@@ -28,26 +28,30 @@ public class AddViewerTracking extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + storeInServletContext(request) + "</span></div>");
+            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + addToServletContext(request) + "</span></div>");
         }
     }
 
-    private int storeInServletContext(HttpServletRequest request) {
+    private String addToServletContext(HttpServletRequest request) {
           ServletContext context = request.getSession().getServletContext();
           String itemTracking = "itemTracking";
 
           int productID = Integer.valueOf(request.getParameter("productID"));
           HashMap hm = (HashMap)context.getAttribute(itemTracking);
-          Integer count = new Integer(1);
+          Integer count = 1;
           
           if(hm == null)
           {
             hm = new HashMap();
             hm.put(productID, count);
+
+            context.setAttribute(itemTracking, hm);
+
+            return "1";
           }
           else
           {
@@ -57,12 +61,15 @@ public class AddViewerTracking extends HttpServlet {
                 hm.put(productID, new Integer(1));
             else
                 hm.put(productID, ++count);
+            
+            context.setAttribute(itemTracking, hm);
+            
+            return String.valueOf(hm.get(productID));
           }
           
-          context.setAttribute(itemTracking, hm);
-          
-          return count;
+
         }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
