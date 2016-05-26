@@ -17,12 +17,12 @@
         <servlet-class>SessionTracking</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewerTracking</servlet-name>
-        <servlet-class>ViewerTracking</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AddViewerTracking</servlet-name>
         <servlet-class>AddViewerTracking</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveViewerTracking</servlet-name>
+        <servlet-class>RemoveViewerTracking</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Products</servlet-name>
@@ -41,12 +41,12 @@
         <url-pattern>/SessionTracking</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewerTracking</servlet-name>
-        <url-pattern>/ViewerTracking</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AddViewerTracking</servlet-name>
         <url-pattern>/AddViewerTracking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveViewerTracking</servlet-name>
+        <url-pattern>/RemoveViewerTracking</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

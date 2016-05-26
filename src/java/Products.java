@@ -28,7 +28,8 @@ public class Products extends HttpServlet {
 
     //stores the database connection
     private Connection conn;
-    
+    private String mutex = ""; //to make the db connection thread-safe
+
     //initi function to open db connection
     @Override
     public void init(ServletConfig config){
@@ -126,36 +127,39 @@ public class Products extends HttpServlet {
            out.println("<h1>Men's Watches</h1>");
            
             try{
+                Statement stmt;
+                ResultSet rs; 
                 
-                // Execute SQL query to get all the watch info from the db
-                Statement stmt = conn.createStatement();
-                String sql;
-                sql = "SELECT * FROM product_descriptions";
-                ResultSet rs = stmt.executeQuery(sql);
+               synchronized(mutex) {
+                    // Execute SQL query to get all the watch info from the db
+                    stmt = conn.createStatement();
+                    String sql;
+                    sql = "SELECT * FROM product_descriptions";
+                    rs = stmt.executeQuery(sql);
 
-                int count = 0;
-                out.println("<table align = 'center'>");
+                    int count = 0;
+                    out.println("<table align = 'center'>");
 
-                // Extract data from result set
-                if (!rs.next()) {                            
-                    out.println("0 results");
-                }
-                else {
-                    out.println("<tr>");
-                    do {
-                        if(count % 3 == 0)
-                            out.println("</tr><tr>");
-                                                
-                        out.println("<td class=\"item_cell\">");
-                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
-                        out.println("</a>");
+                    // Extract data from result set
+                    if (!rs.next()) {                            
+                        out.println("0 results");
+                    }
+                    else {
+                        out.println("<tr>");
+                        do {
+                            if(count % 3 == 0)
+                                out.println("</tr><tr>");
 
-                        count++;
-                    } while (rs.next());
-                }
-                                    
+                            out.println("<td class=\"item_cell\">");
+                            out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                            out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                            out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                            out.println("</a>");
+
+                            count++;
+                        } while (rs.next());
+                    }
+               }                    
                 // Clean-up environment
                 rs.close();
                 stmt.close();

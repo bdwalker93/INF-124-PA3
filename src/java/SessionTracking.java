@@ -32,7 +32,8 @@ import javax.servlet.http.HttpSession;
 public class SessionTracking extends HttpServlet {
     //stores the database connection
     private Connection conn;
-    
+    private String mutex = ""; //to make the db connection thread-safe
+
     //initi function to open db connection
     @Override
     public void init(ServletConfig config){
@@ -127,37 +128,41 @@ public class SessionTracking extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         try{
-            // Execute SQL query to get all the watch info from the db
-            Statement stmt = conn.createStatement();
-            String sql;
-            ResultSet rs = null; 
+            Statement stmt; 
+            ResultSet rs;
             
-            out.println("<table align = 'center'>");
-                
-            for(int i = 0; i < visitedIds.size() && i < 2; i++)
-                out.println("<th></th>");
-            
-            out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
+            synchronized (mutex)
+            {            // Execute SQL query to get all the watch info from the db
+                stmt = conn.createStatement();
+                String sql;
+                rs = null; 
 
-            out.println("<tr>");
-                
-            for(int i = 0; i < visitedIds.size(); i++){
+                out.println("<table align = 'center'>");
 
-                sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
-                rs = stmt.executeQuery(sql);
+                for(int i = 0; i < visitedIds.size() && i < 2; i++)
+                    out.println("<th></th>");
 
-                //need to advance it to the first row
-                rs.next();
-            
-                out.println("<td class=\"item_cell\">");
-                out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
-                out.println("</a>");
-                out.println("</td>");
+                out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
 
+                out.println("<tr>");
+
+                for(int i = 0; i < visitedIds.size(); i++){
+
+                    sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
+                    rs = stmt.executeQuery(sql);
+
+                    //need to advance it to the first row
+                    rs.next();
+
+                    out.println("<td class=\"item_cell\">");
+                    out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                    out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                    out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
+                    out.println("</a>");
+                    out.println("</td>");
+
+                }
             }
-             
             out.println("</tr>");
             out.println("</table>");
             

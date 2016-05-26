@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductDescription extends HttpServlet {
  //stores the database connection
     private Connection conn;
-    private int viewerCount;
+    private String mutex = ""; //to make the db connection thread-safe
     
     //initi function to open db connection
     @Override
@@ -96,13 +96,19 @@ public class ProductDescription extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-              
-            // Execute SQL query to get all the watch info from the db
-            Statement stmt = conn.createStatement();
-            String sql;
-            sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
-            ResultSet rs = stmt.executeQuery(sql);
-         
+           
+            //to store the returned result set and statement
+            ResultSet rs;
+            Statement stmt;
+            
+            //critical section of function
+            synchronized(mutex){
+                // Execute SQL query to get all the watch info from the db
+                stmt = conn.createStatement();
+                String sql;
+                sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
+                rs = stmt.executeQuery(sql);
+            }
             //need to advance it to the first row
             rs.next();
 
@@ -157,7 +163,7 @@ public class ProductDescription extends HttpServlet {
             dispatcher.include(request, response);
             
             //including session tracking info (no the reappending of the product id)
-            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/ViewerTracking");
+            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/AddViewerTracking");
             viewerDispatcher.include(request, response);
                         
             //output the footer
