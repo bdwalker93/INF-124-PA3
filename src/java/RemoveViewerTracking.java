@@ -30,12 +30,11 @@ public class RemoveViewerTracking extends HttpServlet {
      */
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println(" <h1> hello world</h1>");
-            out.flush();
-            removeFromServletContext(request);
-        }
+            String data = "Hello World!";
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(data);
+            System.out.println("\n\nasdasdasads\n\n");
     }
 
     private String removeFromServletContext(HttpServletRequest request) {

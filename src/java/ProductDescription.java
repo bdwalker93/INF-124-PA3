@@ -121,9 +121,11 @@ public class ProductDescription extends HttpServlet {
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/product_description_style.css\">");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
+            out.println("<script src=\"ProductDescription.js\"></script>");
+            
             out.println("</head>");
-            out.println("<body>");
-
+            
+            out.println("<body onunload=\"removeView()\">");
 
             /*BEGINNING OF PAGE*/
             //nav bar
@@ -163,9 +165,7 @@ public class ProductDescription extends HttpServlet {
             dispatcher.include(request, response);
                        
                         
-            //including session tracking info (no the reappending of the product id)
-            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/AddViewerTracking");
-            viewerDispatcher.include(request, response);
+
 
 
             //output the footer

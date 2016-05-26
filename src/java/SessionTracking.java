@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -194,6 +195,10 @@ public class SessionTracking extends HttpServlet {
                 session.setAttribute(visitedIdsKey, visitedIds);
             }
         }
+        
+            //including session tracking info (no the reappending of the product id)
+            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/AddViewerTracking");
+            viewerDispatcher.include(request, response);
 
     }
 
