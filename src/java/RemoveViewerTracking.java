@@ -30,13 +30,10 @@ public class RemoveViewerTracking extends HttpServlet {
      */
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String data = "Hello World!";
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(data);
-            
-            System.out.println("\n\nasdasdasads\n\n");
-            
+            response.getWriter().write("Sucessfully Removed View!");
+     System.out.println("REMOVING");
             removeFromServletContext(request);
     }
 
@@ -52,24 +49,23 @@ public class RemoveViewerTracking extends HttpServlet {
             int productID = Integer.valueOf(request.getParameter("productID"));
               
             HashMap hm = (HashMap)context.getAttribute(itemTracking);
-            Integer count = 0;
           
             //hm should never be null, but just in case
             if(hm == null)
             {
               hm = new HashMap();
-              hm.put(productID, count);
+              hm.put(productID, 0);
 
               context.setAttribute(itemTracking, hm);
-
+                System.out.println("Major error!!!!!!!!!!!!!!!!!!");
               return "0";
             }
             else
             {
-              count = (Integer)hm.get(productID);
+              Integer count = (Integer)hm.get(productID);
 
               //again, count should never be null, but just in case
-              if(count == null || count == 0)
+              if(count == null)
                   hm.put(productID, 0);
               else
                   hm.put(productID, --count);

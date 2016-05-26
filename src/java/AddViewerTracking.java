@@ -31,6 +31,8 @@ public class AddViewerTracking extends HttpServlet {
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+             System.out.println("ADDING");
+
         try (PrintWriter out = response.getWriter()) {
             out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + addToServletContext(request) + "</span></div>");
         }
