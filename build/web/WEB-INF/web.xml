@@ -17,8 +17,12 @@
         <servlet-class>SessionTracking</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewerTracker</servlet-name>
-        <servlet-class>ViewerTracker</servlet-class>
+        <servlet-name>ViewerTracking</servlet-name>
+        <servlet-class>ViewerTracking</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddViewerTracking</servlet-name>
+        <servlet-class>AddViewerTracking</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Products</servlet-name>
@@ -35,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>SessionTracking</servlet-name>
         <url-pattern>/SessionTracking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewerTracking</servlet-name>
+        <url-pattern>/ViewerTracking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddViewerTracking</servlet-name>
+        <url-pattern>/AddViewerTracking</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

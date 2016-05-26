@@ -156,13 +156,9 @@ public class ProductDescription extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
             dispatcher.include(request, response);
             
-            //sets the context interface
-            
-            //ServletContext context = getServletContext();
-
-            //uses the context object to display the number of people viewing this page
-            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + getServletContext().getInitParameter("viewerCount") + "</span></div>");
-
+            //including session tracking info (no the reappending of the product id)
+            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/ViewerTracking");
+            viewerDispatcher.include(request, response);
                         
             //output the footer
             out.println("  <!--        This is the footer-->\n" +
