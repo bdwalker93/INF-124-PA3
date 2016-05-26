@@ -66,8 +66,6 @@ public class AddViewerTracking extends HttpServlet {
             
             return String.valueOf(hm.get(productID));
           }
-          
-
         }
 
 

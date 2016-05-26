@@ -161,11 +161,13 @@ public class ProductDescription extends HttpServlet {
             //including session tracking info (no the reappending of the product id)
             RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
             dispatcher.include(request, response);
-            
+                       
+                        
             //including session tracking info (no the reappending of the product id)
             RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/AddViewerTracking");
             viewerDispatcher.include(request, response);
-                        
+
+
             //output the footer
             out.println("  <!--        This is the footer-->\n" +
             "        <footer>\n" +

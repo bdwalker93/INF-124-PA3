@@ -28,41 +28,49 @@ public class RemoveViewerTracking extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+ protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + storeInServletContext(request) + "</span></div>");
+            out.println(" <h1> hello world</h1>");
+            out.flush();
+            removeFromServletContext(request);
         }
     }
 
-    private int storeInServletContext(HttpServletRequest request) {
+    private String removeFromServletContext(HttpServletRequest request) {
           ServletContext context = request.getSession().getServletContext();
           String itemTracking = "itemTracking";
 
           int productID = Integer.valueOf(request.getParameter("productID"));
           HashMap hm = (HashMap)context.getAttribute(itemTracking);
-          Integer count = new Integer(1);
+          Integer count = 0;
           
+          //hm should never be null, but just in case
           if(hm == null)
           {
             hm = new HashMap();
             hm.put(productID, count);
+
+            context.setAttribute(itemTracking, hm);
+
+            return "0";
           }
           else
           {
             count = (Integer)hm.get(productID);
             
-            if(count == null)
-                hm.put(productID, new Integer(1));
+            //again, count should never be null, but just in case
+            if(count == null || count == 0)
+                hm.put(productID, 0);
             else
-                hm.put(productID, ++count);
+                hm.put(productID, --count);
+            
+            context.setAttribute(itemTracking, hm);
+            
+            return String.valueOf(hm.get(productID));
           }
-          
-          context.setAttribute(itemTracking, hm);
-          
-          return count;
-        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
