@@ -34,41 +34,52 @@ public class RemoveViewerTracking extends HttpServlet {
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(data);
+            
             System.out.println("\n\nasdasdasads\n\n");
+            
+            removeFromServletContext(request);
     }
 
     private String removeFromServletContext(HttpServletRequest request) {
           ServletContext context = request.getSession().getServletContext();
           String itemTracking = "itemTracking";
-
-          int productID = Integer.valueOf(request.getParameter("productID"));
-          HashMap hm = (HashMap)context.getAttribute(itemTracking);
-          Integer count = 0;
-          
-          //hm should never be null, but just in case
-          if(hm == null)
+          if(request.getParameter("productID") == null)
           {
-            hm = new HashMap();
-            hm.put(productID, count);
-
-            context.setAttribute(itemTracking, hm);
-
-            return "0";
+              return "INVALID REQUEST";
           }
           else
           {
-            count = (Integer)hm.get(productID);
-            
-            //again, count should never be null, but just in case
-            if(count == null || count == 0)
-                hm.put(productID, 0);
+            int productID = Integer.valueOf(request.getParameter("productID"));
+              
+            HashMap hm = (HashMap)context.getAttribute(itemTracking);
+            Integer count = 0;
+          
+            //hm should never be null, but just in case
+            if(hm == null)
+            {
+              hm = new HashMap();
+              hm.put(productID, count);
+
+              context.setAttribute(itemTracking, hm);
+
+              return "0";
+            }
             else
-                hm.put(productID, --count);
-            
-            context.setAttribute(itemTracking, hm);
-            
-            return String.valueOf(hm.get(productID));
+            {
+              count = (Integer)hm.get(productID);
+
+              //again, count should never be null, but just in case
+              if(count == null || count == 0)
+                  hm.put(productID, 0);
+              else
+                  hm.put(productID, --count);
+
+              context.setAttribute(itemTracking, hm);
+
+              return String.valueOf(hm.get(productID));
+            }   
           }
+          
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -97,8 +108,8 @@ public class RemoveViewerTracking extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+        throw new ServletException("NOT IMPLEMENTED");
+        }
 
     /**
      * Returns a short description of the servlet.

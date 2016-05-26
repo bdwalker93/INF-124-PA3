@@ -121,6 +121,7 @@ public class ProductDescription extends HttpServlet {
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/product_description_style.css\">");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/navigation_style.css\">");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
+            out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js></script>");
             out.println("<script src=\"ProductDescription.js\"></script>");
             
             out.println("</head>");
