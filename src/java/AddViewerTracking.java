@@ -30,42 +30,69 @@ public class AddViewerTracking extends HttpServlet {
      */
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-             System.out.println("ADDING");
 
-        try (PrintWriter out = response.getWriter()) {
-            out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + addToServletContext(request) + "</span></div>");
-        }
+        System.out.println("FROM: AddViewerTracking");
+             
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(addToServletContext(request));
     }
 
     private String addToServletContext(HttpServletRequest request) {
-          ServletContext context = request.getSession().getServletContext();
-          String itemTracking = "itemTracking";
+         
+        ServletContext context = request.getSession().getServletContext();
+        String itemTracking = "itemTracking";
 
-          int productID = Integer.valueOf(request.getParameter("productID"));
+        int productID = Integer.valueOf(request.getParameter("productID"));
+        HashMap hm = (HashMap)context.getAttribute(itemTracking);
+        Integer count = 1;
+
+        if(hm == null)
+        {
+          hm = new HashMap();
+          hm.put(productID, count);
+
+          context.setAttribute(itemTracking, hm);
+
+          return "1";
+        }
+        else
+        {
+          count = (Integer)hm.get(productID);
+
+          if(count == null)
+              hm.put(productID, new Integer(1));
+          else
+              hm.put(productID, ++count);
+
+          context.setAttribute(itemTracking, hm);
+
+          return String.valueOf(hm.get(productID));
+        }
+        }
+    
+    /*
+    *****DEPRICATED****
+    */
+        static String getViewerCount(int productID, ServletContext context){
+            String itemTracking = "itemTracking";
+
           HashMap hm = (HashMap)context.getAttribute(itemTracking);
-          Integer count = 1;
+          Integer count = -1;
           
           if(hm == null)
           {
-            hm = new HashMap();
-            hm.put(productID, count);
-
-            context.setAttribute(itemTracking, hm);
-
-            return "1";
+            System.out.println("This is a big problem");
+            return "Why doesnt the hashmap exist??";
           }
           else
-          {
-            count = (Integer)hm.get(productID);
-            
-            if(count == null)
-                hm.put(productID, new Integer(1));
-            else
-                hm.put(productID, ++count);
-            
-            context.setAttribute(itemTracking, hm);
-            
+          {            
+            if((Integer)hm.get(productID) == null)
+            {
+              System.out.println("This is a big problem");
+              return "Why doesnt the hashmap exist??";
+            }            
+                        
             return String.valueOf(hm.get(productID));
           }
         }

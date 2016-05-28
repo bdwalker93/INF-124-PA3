@@ -94,6 +94,11 @@ public class ProductDescription extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //solves our back button problem with viewer count
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0");
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
            
@@ -123,7 +128,7 @@ public class ProductDescription extends HttpServlet {
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style_sheets/body_style.css\">");
             out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js\"></script>");
             out.println("<script src=\"ProductDescription.js\"></script>");
-            
+                       
             out.println("</head>");
             
             out.println("<body onunload=\"removeView(" + request.getParameter("productID") + ")\">");
@@ -144,7 +149,6 @@ public class ProductDescription extends HttpServlet {
 
             out.println("<h1>" + rs.getString("brand") + " </h1>");
             out.println("<h2>" + rs.getString("name") + " </h2>");
-
 
             out.println("<img class='product_image' src='" + rs.getString("image_path") + " ' alt='This is an image of the: " + rs.getString("brand") + "  - " + rs.getString("name") + " '>");
 
