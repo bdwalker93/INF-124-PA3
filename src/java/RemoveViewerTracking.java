@@ -30,11 +30,13 @@ public class RemoveViewerTracking extends HttpServlet {
      */
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("text/plain");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("Sucessfully Removed View!");
-     System.out.println("REMOVING");
-            removeFromServletContext(request);
+
+        System.out.println("FROM: RemoveViewerTracking");
+        removeFromServletContext(request);
+        
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("Sucessfully Removed A Viewer!");
     }
 
     private String removeFromServletContext(HttpServletRequest request) {
@@ -53,11 +55,7 @@ public class RemoveViewerTracking extends HttpServlet {
             //hm should never be null, but just in case
             if(hm == null)
             {
-              hm = new HashMap();
-              hm.put(productID, 0);
-
-              context.setAttribute(itemTracking, hm);
-                System.out.println("Major error!!!!!!!!!!!!!!!!!!");
+                System.out.println("In the RemoveViewerTracking: Our context hashmap doesnt exist yet");
               return "0";
             }
             else
@@ -66,11 +64,14 @@ public class RemoveViewerTracking extends HttpServlet {
 
               //again, count should never be null, but just in case
               if(count == null)
+              {
                   hm.put(productID, 0);
+                  System.out.println("In the RemoveViewerTracking: Our key in our hash map doesnt exist yet");
+              }
               else
                   hm.put(productID, --count);
 
-              context.setAttribute(itemTracking, hm);
+              context.setAttribute(itemTracking, hm); 
 
               return String.valueOf(hm.get(productID));
             }   

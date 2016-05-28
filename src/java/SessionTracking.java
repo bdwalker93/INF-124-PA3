@@ -108,6 +108,8 @@ public class SessionTracking extends HttpServlet {
         String visitedIdsKey = new String("numVisited");
         
         final int MAX_DISPLAYED = 5;
+        
+        PrintWriter out = response.getWriter();
 
         String currentId = request.getParameter("productID");
         //only output visited items if the user has been here before
@@ -119,20 +121,16 @@ public class SessionTracking extends HttpServlet {
             //sets the attribute with the array
             session.setAttribute(visitedIdsKey, visitedIds);
             
-            PrintWriter out = response.getWriter();
             out.println("<div></div>");
 
         }
         else
         {
-            
             visitedIds = (LinkedList<String>)session.getAttribute(visitedIdsKey);
-
-
 
             // Set response content type
             response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
+
             try{
                 Statement stmt; 
                 ResultSet rs;
@@ -172,15 +170,18 @@ public class SessionTracking extends HttpServlet {
                 out.println("</tr>");
                 out.println("</table>");
 
+                
+                
                 // Clean-up environment
                 if(rs != null)
                     rs.close();
                 stmt.close();
+                
             }   
             catch (SQLException ex) {    
                 Logger.getLogger(SessionTracking.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             //logic for determining which products are here
             if(!visitedIds.contains(new String(currentId)) && !visitedIds.getLast().equals(currentId))
             {
@@ -196,9 +197,13 @@ public class SessionTracking extends HttpServlet {
             }
         }
         
-            //including session tracking info (no the reappending of the product id)
-            RequestDispatcher viewerDispatcher = request.getRequestDispatcher("/AddViewerTracking");
-            viewerDispatcher.include(request, response);
+        //increments our addviewer  
+
+        //displaying the number of people viewing the current page
+//        out.println(" <div class=\"viewers\"> Number of people viewing this page: <span class=\"viewers_count\">" + AddViewerTracking.getViewerCount(Integer.parseInt(currentId), request.getSession().getServletContext()) + "</span></div>");
+        out.println(" <div class=\"viewers\"> Number of people viewing this page: <span id=\"view_data\" class=\"viewers_count\"></span></div>");
+            
+        out.println("<script> addView(" + request.getParameter("productID") + ")</script>");
 
     }
 
