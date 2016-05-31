@@ -52,11 +52,11 @@ public class Products extends HttpServlet {
     private void databaseConnect()
     {
       // JDBC driver name and database URL
-        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+        final String DB_URL="jdbc:mysql://localhost:3306/inf124grp17";
 
       //  Database credentials
         final String USER = "root";
-        final String PASS = "";
+        final String PASS = "root";
 
         try{
         // Register JDBC driver
@@ -96,6 +96,7 @@ public class Products extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            //databaseConnect();
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
