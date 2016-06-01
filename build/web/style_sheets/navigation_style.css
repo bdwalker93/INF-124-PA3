@@ -44,14 +44,14 @@
             }
             
             .theme_color:hover{
-                    background-color: #0066ff;
+                    background-color: #980000;
             }
             nav li a:hover:not(.theme_color) {
                     background-color: #111;
             }
 
             .theme_color {
-                background-color: #1a75ff;
+                background-color: #cc0000;
             }
 
             a{

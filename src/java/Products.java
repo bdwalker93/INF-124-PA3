@@ -119,7 +119,8 @@ public class Products extends HttpServlet {
             "            <li><a href=\"index.html\">Home</a></li>\n" +
             "            <li><a href=\"Products\">Products</a></li>\n" +
             "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-            "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+            "            <li style=\"\"><a  href=\"about.html\">About Us</a></li>\n" +
+            "`           <li style =\"float:right; background-color:red\"><a class=\"theme_color\" href=\"Checkout\">Checkout</a></li>\n" +
             "        </ul>\n" +
             "        </nav>");
 
