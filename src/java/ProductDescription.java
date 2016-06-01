@@ -157,7 +157,7 @@ public class ProductDescription extends HttpServlet {
 
             out.println("<form class=\"checkout_button_form\" action=\"Checkout\">");
              out.println("<input type='hidden' name='productID' value='" + request.getParameter("productID") + "'>");
-            out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Buy It Now!\">");
+            out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Add to Cart!\">");
             out.println(" </form>");
 
 
