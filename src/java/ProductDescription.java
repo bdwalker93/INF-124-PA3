@@ -53,11 +53,11 @@ public class ProductDescription extends HttpServlet {
     private void databaseConnect()
     {
       // JDBC driver name and database URL
-        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+        final String DB_URL="jdbc:mysql://localhost:4956/inf124grp17";
 
       //  Database credentials
         final String USER = "root";
-        final String PASS = "";
+        final String PASS = "root";
 
         try{
         // Register JDBC driver
@@ -155,7 +155,7 @@ public class ProductDescription extends HttpServlet {
             out.println("<div class=\"description_text\">" + rs.getString("description") + "</div>");
             out.println("<div class=\"specs_text\">Price: $" + rs.getString("price") + " <br>Product ID: #" + rs.getString("id") + " </div>");
 
-            out.println("<form class=\"checkout_button_form\" action=\"Checkout\">");
+            out.println("<form class=\"checkout_button_form\" action=\"Products\">");
              out.println("<input type='hidden' name='productID' value='" + request.getParameter("productID") + "'>");
             out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Add to Cart!\">");
             out.println(" </form>");

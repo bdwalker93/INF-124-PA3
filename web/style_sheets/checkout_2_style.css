@@ -60,6 +60,32 @@
                 font-size: 30px;
                 text-align: center;
             }
+            
+            
+            .personal_information_container{
+                /*border: 1px solid black;*/
+                /*float: right;*/
+            }
+            
+            .personal_table{
+                /*border: 1px solid black;*/
+                margin: 0px auto;
+            }
+            .personal_table_row{
+                
+            }
+            
+            .personal_table_col{
+                /*border: 1px solid black;*/
+                width: 300px;
+                font-size: 20px;
+                padding: 3px;
+                text-align: center;
+                
+
+            }
+            
+            
             .order_summary_table{
                 /*border: 1px solid black;*/
             }
@@ -84,9 +110,15 @@
                 text-align: center;
                 padding-top: 15px;
             }
+            .order_button:hover{
+                background: #0d6529;
+            }
             .order_button{
                 height: 55px;
-                width: 98%;
-                background-color: #1a75ff;
+                width: 10%;
+                background-color: #1eab06;
                 font-size: 20px;
+                border-radius: 10px;
+                 
+                
             }

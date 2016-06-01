@@ -97,10 +97,140 @@ public class Checkout extends HttpServlet {
             out.println("$38.50");
             out.println("</td>");
             out.println("</tr>");
-            
-            
-            
             out.println("</table>");
+            
+            out.println("<div class=\"personal_information_container\">\n" +
+"                   <hr>\n" +
+"                   <h2>Personal Information</h2>\n" +
+"                   <hr>\n" +
+"\n" +
+"                   <table class=\"personal_table\">\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               First name \n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"first_name\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Last name \n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"last_name\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Phone Number\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"phone_number\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Street\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"street\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Zip Code\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input id=\"zip_box\" type=\"text\" name=\"zip_code\" onblur=\"validZip(this.value); getZipInfo(this.value);  updateEntireSummary(<?php echo $productInfo['id'] ?>)\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               City\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"city\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               State \n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"state\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Shipping Method\n" +
+"                           </td>\n" +
+"                           <td class=\"shipping_col\">\n" +
+"                               <div style=\"float: top\">\n" +
+"                                   <input id=\"shiping1\" type=\"radio\" name=\"shipping_info\" value=\"Overnight\" onclick=\"updateEntireSummary(<?php echo $productInfo['id'] ?>)\">Overnight ($20)<br>\n" +
+"                               </div>\n" +
+"                               <div style=\"float: top\">\n" +
+"                                   <input id=\"shiping2\" type=\"radio\" name=\"shipping_info\" value=\"2-Day Expedited\" onclick=\"updateEntireSummary(<?php echo $productInfo['id'] ?>)\">2-Day Expedited ($10)<br>\n" +
+"                               </div>\n" +
+"                               <div style=\"float: top\">\n" +
+"                                   <input id=\"shiping3\" type=\"radio\" name=\"shipping_info\" value=\"6-Day Ground\" onclick=\"updateEntireSummary(<?php echo $productInfo['id'] ?>)\" checked>6-Day Ground (Free)<br>\n" +
+"                               </div>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Credit Card Number\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"credit_card_number\" onblur=\"detectCardType(this.value)\"required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               Credit Card Expiration\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n" +
+"                               <input type=\"text\" name=\"credit_card_expiration\" required>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"\n" +
+"\n" +
+"                       <tr class=\"personal_table_row\">\n" +
+"                           <<td class=\"personal_table_col\">\n" +
+"                               Notes\n" +
+"                           </td>\n" +
+"                           <td class=\"personal_table_col\">\n"  +
+"                               <textarea  name=\"notes\" class=\"notes\" form=\"purchase_form\"></textarea>\n" +
+"                           </td>\n" +
+"                       </tr>\n" +
+"                   </table>\n" +
+"               </div>\n" +
+"\n" +
+"\n");
+
+            
+            
+            
+   
+            
+            out.println("<div class=\"submit_button_container\">\n" +
+"                    <input class=\"order_button\" type=\"submit\" value=\"Place Your Order\">\n" +
+"                </div>");
             
             
             out.println("</body>");
