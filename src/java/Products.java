@@ -113,16 +113,16 @@ public class Products extends HttpServlet {
 
         /*BEGINNING OF PAGE*/
         //nav bar
-        out.println(" <!--        This is the navigator-->\n" +
+            out.println(" <!--        This is the navigator-->\n" +
             "        <nav>\n" +
             "         <ul>\n" +
             "            <li><a href=\"index.html\">Home</a></li>\n" +
             "            <li><a href=\"Products\">Products</a></li>\n" +
             "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-            "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
+            "            <li><a href=\"about.html\">About Us</a></li>\n" +
+            "           <li style =\"float:right; \"><a style=\"background-color:red;\" href=\"Checkout\">Checkout</a></li>\n" +
             "        </ul>\n" +
             "        </nav>");
-
             //products display
            out.println("<h1>Men's Watches</h1>");
            
