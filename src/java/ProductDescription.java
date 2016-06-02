@@ -136,14 +136,15 @@ public class ProductDescription extends HttpServlet {
             /*BEGINNING OF PAGE*/
             //nav bar
             out.println(" <!--        This is the navigator-->\n" +
-                "        <nav>\n" +
-                "         <ul>\n" +
-                "            <li><a href=\"index.html\">Home</a></li>\n" +
-                "            <li><a href=\"Products\">Products</a></li>\n" +
-                "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
-                "            <li style=\"float:right\"><a class=\"theme_color\" href=\"about.html\">About Us</a></li>\n" +
-                "        </ul>\n" +
-                "        </nav>");
+            "        <nav>\n" +
+            "         <ul>\n" +
+            "            <li><a href=\"index.html\">Home</a></li>\n" +
+            "            <li><a href=\"Products\">Products</a></li>\n" +
+            "            <li><a href=\"meet_the_team.html\">Meet The Team</a></li>\n" +
+            "            <li><a href=\"about.html\">About Us</a></li>\n" +
+            "           <li style =\"float:right; \"><a style=\"background-color:red;\" href=\"Checkout\">Checkout</a></li>\n" +
+            "        </ul>\n" +
+            "        </nav>");
 
             //products display
 
@@ -155,9 +156,9 @@ public class ProductDescription extends HttpServlet {
             out.println("<div class=\"description_text\">" + rs.getString("description") + "</div>");
             out.println("<div class=\"specs_text\">Price: $" + rs.getString("price") + " <br>Product ID: #" + rs.getString("id") + " </div>");
 
-            out.println("<form class=\"checkout_button_form\" action=\"Checkout\">");
+            out.println("<form class=\"checkout_button_form\" action=\"Products\">");
              out.println("<input type='hidden' name='productID' value='" + request.getParameter("productID") + "'>");
-            out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Buy It Now!\">");
+            out.println("<input class=\"checkout_button\" type=\"submit\" value=\"Add to Cart!\">");
             out.println(" </form>");
 
 

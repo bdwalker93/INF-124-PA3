@@ -1,11 +1,11 @@
-h1{
+ h1{
                 /*border: 1px solid black;*/
                 margin-top: 10px;
-                margin-bottom: 10px;
+                margin-bottom: 30px;
                 text-align: center;
                 margin-left: auto;
                 margin-right: auto;
-                font-size: 60px;
+                font-size: 80px;
                 /*text-decoration: underline;*/
             }
             
@@ -20,44 +20,45 @@ h1{
                     font-weight: bold;
             }
             
-            .overall_table{
-                  /*border: 1px solid black;*/
-
-            }
             
-            /*This is all of the product/personal information*/
-            .left_container{
-                /*border: 1px solid black;*/
-                float: left; 
-                width: 500px;
-                height: 1000px;
-                margin-left: 300px;
-            }
-            .product_information_container{
-                /*border: 1px solid black;*/
-                /*float: left;*/
-            }
-            
-            .product_table{
+            table.outside_table {
+                border: 3px solid;
+                text-align: center;
+                margin: 0px auto;
+                width:95%;
                 
             }
-            
-            .product_image{
-                max-height: 200px;
+            tr.tr1{
+                height:50px;
             }
             
-            .image_col{
-                padding-left: 28%;
+            td.td0{
+                width:10%;
+                
+                height: 100px;
             }
-            .product_table_col{
-                 /*border: 1px solid black;*/
-                width: 300px;
-                font-size: 20px;
+            
+            td.td1{
+                width:50%;
+                border: 1px solid;
+                height: 100px;
+            }
+            
+            td.td2{
+                width:10%;
+                border: 1px solid;
+                height: 100px;
+            }
+            
+            td.td3{
+                width:20%;
+                border: 1px solid;
+                height: 100px;
+            }
+            
+            h3{
+                font-size: 30px;
                 text-align: center;
-
-            }
-            
-            .product_table_row{
             }
             
             
@@ -68,9 +69,10 @@ h1{
             
             .personal_table{
                 /*border: 1px solid black;*/
+                margin: 0px auto;
             }
             .personal_table_row{
-               text-align: center;
+                
             }
             
             .personal_table_col{
@@ -83,43 +85,7 @@ h1{
 
             }
             
-            .shipping_col{
-                width: 300px;
-                font-size: 20px;
-                padding: 3px;
-                padding-left: 15px;
-            }
-            .notes_column{
-                /*border: 1px solid black;*/
-                height: 120px;
-                padding: 3px;
-                font-size: 20px;
-                text-align: center;
-
-            }
-            .notes{
-                height: 97%; 
-                width: 97%;
-            }
             
-            
-            /*This is all of the order summary css*/
-            .right_container{
-                border: 3px solid black;
-                float: right; 
-                margin-right: 450px;
-                margin-left: 150px;
-                margin-bottom: 350px;
-
-                height: 390px;
-                width: 370px;
-                background-color: #f2f2f2;
-            }
-            
-            h3{
-                font-size: 30px;
-                text-align: center;
-            }
             .order_summary_table{
                 /*border: 1px solid black;*/
             }
@@ -144,9 +110,15 @@ h1{
                 text-align: center;
                 padding-top: 15px;
             }
+            .order_button:hover{
+                background: #0d6529;
+            }
             .order_button{
                 height: 55px;
-                width: 98%;
-                background-color: #1a75ff;
+                width: 10%;
+                background-color: #1eab06;
                 font-size: 20px;
+                border-radius: 10px;
+                 
+                
             }
