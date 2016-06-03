@@ -48,7 +48,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="Products">Products</a></li>
             <li><a href="meet_the_team.html">Meet The Team</a></li>
-            <li style="float:right"><a class="theme_color" href="about.html">About Us</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li style="float:right;"><a style="background-color:red;" href=\"Checkout">Checkout</a></li>
 
         </ul>
                     
