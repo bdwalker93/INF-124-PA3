@@ -1,12 +1,11 @@
 html {
+    width: 100%;
     height: 100%;
 }
 body {
     min-height: 100%;
     padding: 0;
     margin: 0;
-}
-body {
     position: relative;
     padding-bottom:  60px;
 }
@@ -51,12 +50,18 @@ table {
     margin-right: 25px;
     font-size: 20px;
     text-align: left;
+
 }
 .customerInfo {
-    max-width: 50%;
+    min-width: 50%;
 }
 .shipping{
-    width: 50%
+    width: 50%;
+}
+p.orderNum{
+    font-size: 25px;
+    margin-left: 25px;
+    text: bold;
 }
 hr {
     display: block;
@@ -69,25 +74,50 @@ hr {
     margin-right: 25px;
 }
 .product_image{
-    display: block;
+    width: 250px;
     margin-left: 10px;
-    max-width: 300px;
+    max-width: 250px;
     margin-right: 10px;
     
 }
 td.orderDescription{
     text-align: left;
-    margin-top: 1px;
+    margin-top: 10px;
     width: 50%;
 }
 td.orderPrice{
+    color: grey;
     float: right;
-    text-align: right;
-    padding: 10px;
+    text-align: left;
+    padding-top: 10px;
+    margin:10px;
     
+}
+td.qty{
+    float: left;
+    margin: 10px;
+    text-align: center;
+    padding-top:10px;
+    
+}
+p.total {
+     text-align: right; 
+     font-size: 25px;
+     margin-right: 25px;
+     
 }
 .footer {
     position: absolute;
     bottom: 0px;
     width: 100%;
+}
+.note{
+    font-size: 25px;
+    text: bold;
+    
+}
+
+.noteLine{
+    font-size: 20px;
+    text-align: left;
 }
