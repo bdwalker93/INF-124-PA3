@@ -48,12 +48,11 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="Products">Products</a></li>
             <li><a href="meet_the_team.html">Meet The Team</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li style="float:right;"><a style="background-color:red;" href=\"Checkout">Checkout</a></li>
+            <li><a href=about.html>About Us</a></li>
+            <li style =float:right;><a style=background-color:red; href=Checkout>Checkout</a></li>
 
         </ul>
-                    
-        </nav>    
+        </nav>   
          
         <h1>Order Detail</h1>
         <h2> 
