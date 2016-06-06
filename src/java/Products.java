@@ -52,11 +52,11 @@ public class Products extends HttpServlet {
     private void databaseConnect()
     {
       // JDBC driver name and database URL
-        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+        final String DB_URL="jdbc:mysql://localhost:4956/inf124grp17";
 
       //  Database credentials
         final String USER = "root";
-        final String PASS = "";
+        final String PASS = "root";
 
         try{
         // Register JDBC driver

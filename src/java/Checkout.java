@@ -6,6 +6,33 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap; 
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +40,67 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Brett
+ * @author Abbas
  */
 public class Checkout extends HttpServlet {
 
+    //stores the database connection
+    private Connection conn;
+    private String mutex = ""; //to make the db connection thread-safe
+
+    //initi function to open db connection
+    @Override
+    public void init(ServletConfig config){
+        try {
+            super.init(config);
+            databaseConnect();
+        } 
+        catch (ServletException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    //closes db connection
+    @Override
+    public void destroy(){
+        databaseDisconnect();
+    }
+    
+    private void databaseConnect()
+    {
+      // JDBC driver name and database URL
+        final String DB_URL="jdbc:mysql://localhost:4956/inf124grp17";
+
+      //  Database credentials
+        final String USER = "root";
+        final String PASS = "root";
+
+        try{
+        // Register JDBC driver
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // Open a connection
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        } 
+        catch (ClassNotFoundException | SQLException ex) {
+         Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+         
+        }
+     
+    }
+    
+    private void databaseDisconnect()
+    {
+        try {
+            conn.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -26,6 +110,11 @@ public class Checkout extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    
+    
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -59,13 +148,37 @@ public class Checkout extends HttpServlet {
             "        </nav>");
             
             
-            out.println("<title>Checkout</title>");            
+
+            
+            
+            out.println("<title>Checkout</title>");     
+            out.println("<form name=\"order_form\" id=\"purchase_form\" action=\"updateOrderdb.php\" onsubmit=\"return order_validation()\" method=\"POST\">");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Checkout" + "</h1>");
             
             out.println("<h2 style=\"text-align:center\">Items in cart:" + "</h2>");
             
+            HttpSession session = request.getSession(true);
+            
+            HashMap<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
+            if(cart == null || cart.isEmpty() || session.isNew())
+            {
+             
+            out.println("<table class = \"outside_table\">");
+            out.println("<tr class = \"tr1\">");
+            out.println("<td class = \"td0\">");
+            
+            out.println("<h2>Your Cart is Empty" + "</h2>");
+            out.println("</td>");
+
+            out.println("</tr>");
+            out.println("</table>");
+                //output that the cart has nothign in it
+            }
+            else
+            {
+                
             out.println("<table class = \"outside_table\">");
             out.println("<tr class = \"tr1\">");
             out.println("<td class = \"td0\">");
@@ -81,23 +194,56 @@ public class Checkout extends HttpServlet {
             out.println("Total");
             out.println("</td>");
             out.println("</tr>");
-            
-            
-            out.println("<tr class = \"tr1\">");
-            out.println("<td class = \"td0\">");
-            out.println("<img style = \"max-width:100px; max-height: 100px;\" src=\"/PA3/images/product_images/AP1.jpg\"");
-            out.println("</td>");
-            out.println("<td class = \"td1\">");
-            out.println("Audimar Pidet AP1");
-            out.println("</td>");
-            out.println("<td class = \"td2\">");
-            out.println("2");
-            out.println("</td>");
-            out.println("<td class = \"td3\">");
-            out.println("$38.50");
-            out.println("</td>");
-            out.println("</tr>");
+           
+            for (String key: cart.keySet()) {
+                
+            try{
+                Statement stmt;
+                ResultSet rs; 
+                
+               synchronized(mutex) {
+                    // Execute SQL query to get all the watch info from the db
+                    stmt = conn.createStatement();
+                    String sql;
+                    sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter(key);
+                    rs = stmt.executeQuery(sql);
+
+                    int count = 0;
+                    out.println("<table align = 'center'>");
+                    out.println("<tr class = \"tr1\">");
+                    out.println("<td class = \"td0\">");
+                    out.println("<img style = \"max-width:100px; max-height: 100px;\" src='" + rs.getString("image_path") + " '");
+                    out.println("</td>");
+                    out.println("<td class = \"td1\">");
+                    out.println(rs.getString("name"));
+                    out.println("</td>");
+                    out.println("<td class = \"td2\">");
+                    out.println(cart.get(key));
+                    out.println("</td>");
+                    out.println("<td class = \"td3\">");
+                    out.println(rs.getString("price"));
+                    out.println("</td>");
+                    out.println("</tr>");
+               
+               }
+               
+            }
+          catch ( SQLException ex) {
+         Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
+         
+        }       
             out.println("</table>");
+//            
+
+            }
+                     
+                
+            }
+                
+                
+            
+            
+            
             
             out.println("<div class=\"personal_information_container\">\n" +
 "                   <hr>\n" +
@@ -231,6 +377,11 @@ public class Checkout extends HttpServlet {
             out.println("<div class=\"submit_button_container\">\n" +
 "                    <input class=\"order_button\" type=\"submit\" value=\"Place Your Order\">\n" +
 "                </div>");
+            
+            out.println("</form>");
+            
+            String sql = "INSERT INTO order_informaiton (first_name, last_name, phone_number, street, zip_code, city, state, shipping_type, credit_card_number, credit_card_expiration, notes) "
+                    + "values ";
             
             
             out.println("</body>");
