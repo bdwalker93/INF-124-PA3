@@ -57,11 +57,11 @@ public class SessionTracking extends HttpServlet {
     private void databaseConnect()
     {
       // JDBC driver name and database URL
-        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+        final String DB_URL="jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp17";
 
       //  Database credentials
-        final String USER = "root";
-        final String PASS = "";
+        final String USER = "inf124grp17";
+        final String PASS = "4ru&RuHU";
 
         try{
         // Register JDBC driver

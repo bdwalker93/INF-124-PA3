@@ -20,7 +20,7 @@
 
         
         <% //making the connection to the database with the localhost.
-            String connectionURL = "jdbc:mysql://localhost/inf124grp17";
+            String connectionURL = "jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp17";
             java.sql.Connection connection = null;
             java.sql.Statement stmt = null;
             java.sql.ResultSet result = null;
@@ -32,7 +32,7 @@
             String sqlCustomer = "SELECT * FROM order_information WHERE order_id = " + orderNumber;
             try {//connection to the database
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                connection = DriverManager.getConnection(connectionURL, "root", "");
+                connection = DriverManager.getConnection(connectionURL, "inf124grp17", "4ru&RuHU");
                 
                 stmt = connection.createStatement();
                 
