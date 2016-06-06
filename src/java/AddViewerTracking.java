@@ -31,7 +31,7 @@ public class AddViewerTracking extends HttpServlet {
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("FROM: AddViewerTracking");
+//        System.out.println("FROM: AddViewerTracking");
              
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

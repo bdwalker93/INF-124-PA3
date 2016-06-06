@@ -25,8 +25,8 @@
         <servlet-class>RemoveViewerTracking</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>addToCart</servlet-name>
-        <servlet-class>addToCart</servlet-class>
+        <servlet-name>AddToCart</servlet-name>
+        <servlet-class>AddToCart</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Products</servlet-name>
@@ -53,8 +53,8 @@
         <url-pattern>/RemoveViewerTracking</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>addToCart</servlet-name>
-        <url-pattern>/addToCart</url-pattern>
+        <servlet-name>AddToCart</servlet-name>
+        <url-pattern>/AddToCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

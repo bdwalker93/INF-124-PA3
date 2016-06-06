@@ -31,7 +31,7 @@ public class RemoveViewerTracking extends HttpServlet {
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("FROM: RemoveViewerTracking");
+//        System.out.println("FROM: RemoveViewerTracking");
         removeFromServletContext(request);
         
         response.setContentType("text/plain");

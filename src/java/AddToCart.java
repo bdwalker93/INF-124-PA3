@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Brett
  */
-public class addToCart extends HttpServlet {
+public class AddToCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,32 +31,32 @@ public class addToCart extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-   
-        String productId = request.getParameter("productID");
+  
+            String productId = request.getParameter("productID");
 
-        HttpSession session = request.getSession(true);
-        
-        HashMap<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
-        
-        if(cart == null)
-        {
-            cart = new HashMap<String, Integer>();
-            cart.put(productId, 1);
-        }
-        else
-        {
-            Integer quantity = cart.get(productId);
-            
-            if(quantity == null)
+            HttpSession session = request.getSession(true);
+
+            HashMap<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
+
+            if(cart == null)
+            {
+                cart = new HashMap<String, Integer>();
                 cart.put(productId, 1);
+            }
             else
-                cart.put(productId, ++quantity);
-        }
-        
-        session.setAttribute("cart", cart);
-        
-        //redirects
-        response.sendRedirect("/Products");
+            {
+                Integer quantity = cart.get(productId);
+
+                if(quantity == null)
+                    cart.put(productId, 1);
+                else
+                    cart.put(productId, ++quantity);
+            }
+
+            session.setAttribute("cart", cart);
+
+            //redirects
+            response.sendRedirect("/Products");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
