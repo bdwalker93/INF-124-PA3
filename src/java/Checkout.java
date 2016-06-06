@@ -69,7 +69,6 @@ public class Checkout extends HttpServlet {
             out.println("<table class = \"outside_table\">");
             out.println("<tr class = \"tr1\">");
             out.println("<td class = \"td0\">");
-//            out.println("Hello! World");
             out.println("</td>");
             out.println("<td class = \"td1\">");
             out.println("Product");
@@ -222,16 +221,13 @@ public class Checkout extends HttpServlet {
 "               </div>\n" +
 "\n" +
 "\n");
+            
+              
+            out.println("<form class=\"submit_button_container\" action=\"ExecuteCheckout\">");
+            out.println("<input class=\"order_button\" type=\"submit\" value=\"Place Your Order\">\n");
+            out.println(" </form>");
 
-            
-            
-            
-   
-            
-            out.println("<div class=\"submit_button_container\">\n" +
-"                    <input class=\"order_button\" type=\"submit\" value=\"Place Your Order\">\n" +
-"                </div>");
-            
+
             
             out.println("</body>");
             out.println("</html>");
