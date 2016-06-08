@@ -26,32 +26,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author Brett
  */
 public class ProductDescription extends HttpServlet {
- //stores the database connection
-    private Connection conn;
-    private String mutex = ""; //to make the db connection thread-safe
-    
-    //initi function to open db connection
-    @Override
-    public void init(ServletConfig config){
-        try { 
-            super.init(config);       
-            databaseConnect();
-            
-        } 
-        catch (ServletException ex) {
-            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-    }
-    
-    //closes db connection
-    @Override
-    public void destroy(){
-        databaseDisconnect();
-    }
-    
-    private void databaseConnect()
+    private Connection databaseConnect()
     {
+        Connection conn = null;
+        
       // JDBC driver name and database URL
         final String DB_URL="jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp17";
 
@@ -70,10 +49,11 @@ public class ProductDescription extends HttpServlet {
          Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
          
         }
+     return conn;
      
     }
     
-    private void databaseDisconnect()
+    private void databaseDisconnect(Connection conn)
     {
         try {
             conn.close();
@@ -106,14 +86,16 @@ public class ProductDescription extends HttpServlet {
             ResultSet rs;
             Statement stmt;
             
-            //critical section of function
-            synchronized(mutex){
-                // Execute SQL query to get all the watch info from the db
-                stmt = conn.createStatement();
-                String sql;
-                sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
-                rs = stmt.executeQuery(sql);
-            }
+            //connecting to the db
+             Connection conn = databaseConnect();
+
+             // Execute SQL query to get all the watch info from the db
+             stmt = conn.createStatement();
+             String sql;
+             sql = "SELECT * FROM product_descriptions WHERE id = " + request.getParameter("productID");
+             rs = stmt.executeQuery(sql);
+
+
             //need to advance it to the first row
             rs.next();
 
@@ -165,6 +147,8 @@ public class ProductDescription extends HttpServlet {
             // Clean-up environment
             rs.close();
             stmt.close();
+            
+            databaseDisconnect(conn);
 
             //including session tracking info (no the reappending of the product id)
             RequestDispatcher dispatcher = request.getRequestDispatcher("/SessionTracking");
@@ -186,10 +170,14 @@ public class ProductDescription extends HttpServlet {
 
             out.println("</body>");
             out.println("</html>");
+            
+
         } 
         catch (SQLException ex) {
         Logger.getLogger(ProductDescription.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

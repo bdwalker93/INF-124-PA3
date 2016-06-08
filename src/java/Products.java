@@ -25,32 +25,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author Brett
  */
 public class Products extends HttpServlet {
-
-    //stores the database connection
-    private Connection conn;
-    private String mutex = ""; //to make the db connection thread-safe
-
-    //initi function to open db connection
-    @Override
-    public void init(ServletConfig config){
-        try {
-            super.init(config);
-            databaseConnect();
-        } 
-        catch (ServletException ex) {
-            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-    
-    //closes db connection
-    @Override
-    public void destroy(){
-        databaseDisconnect();
-    }
-    
-    private void databaseConnect()
+   private Connection databaseConnect()
     {
+        Connection conn = null;
+        
       // JDBC driver name and database URL
         final String DB_URL="jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp17";
 
@@ -69,10 +47,11 @@ public class Products extends HttpServlet {
          Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
          
         }
+     return conn;
      
     }
     
-    private void databaseDisconnect()
+    private void databaseDisconnect(Connection conn)
     {
         try {
             conn.close();
@@ -95,6 +74,8 @@ public class Products extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+                    
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -130,36 +111,41 @@ public class Products extends HttpServlet {
                 Statement stmt;
                 ResultSet rs; 
                 
-               synchronized(mutex) {
-                    // Execute SQL query to get all the watch info from the db
-                    stmt = conn.createStatement();
-                    String sql;
-                    sql = "SELECT * FROM product_descriptions";
-                    rs = stmt.executeQuery(sql);
+                //connects the database
+                Connection conn = databaseConnect();
 
-                    int count = 0;
-                    out.println("<table align = 'center'>");
+                // Execute SQL query to get all the watch info from the db
+                stmt = conn.createStatement();
+                String sql;
+                sql = "SELECT * FROM product_descriptions";
+                rs = stmt.executeQuery(sql);
 
-                    // Extract data from result set
-                    if (!rs.next()) {                            
-                        out.println("0 results");
-                    }
-                    else {
-                        out.println("<tr>");
-                        do {
-                            if(count % 3 == 0)
-                                out.println("</tr><tr>");
+                int count = 0;
+                out.println("<table align = 'center'>");
 
-                            out.println("<td class=\"item_cell\">");
-                            out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                            out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                            out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
-                            out.println("</a>");
+                // Extract data from result set
+                if (!rs.next()) {                            
+                    out.println("0 results");
+                }
+                else {
+                    out.println("<tr>");
+                    do {
+                        if(count % 3 == 0)
+                            out.println("</tr><tr>");
 
-                            count++;
-                        } while (rs.next());
-                    }
-               }                    
+                        out.println("<td class=\"item_cell\">");
+                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                        out.println("<img class = 'product_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name") + "<br> <span class='price_text'> $" + rs.getString("price") + "</span> ");
+                        out.println("</a>");
+
+                        count++;
+                    } while (rs.next());
+                }
+
+                //disconnects the database
+                databaseDisconnect(conn);
+                                   
                 // Clean-up environment
                 rs.close();
                 stmt.close();
@@ -183,6 +169,7 @@ public class Products extends HttpServlet {
             
             out.println("</body>");
             out.println("</html>");
+           
         }
     }
 
