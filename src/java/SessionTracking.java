@@ -31,37 +31,17 @@ import javax.servlet.http.HttpSession;
  * @author Brett
  */
 public class SessionTracking extends HttpServlet {
-    //stores the database connection
-    private Connection conn;
-    private String mutex = ""; //to make the db connection thread-safe
 
-    //initi function to open db connection
-    @Override
-    public void init(ServletConfig config){
-        try {
-            super.init(config);
-            databaseConnect();
-        } 
-        catch (ServletException ex) {
-            Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-    
-    //closes db connection
-    @Override
-    public void destroy(){
-        databaseDisconnect();
-    }
-    
-    private void databaseConnect()
+    private Connection databaseConnect()
     {
+        Connection conn = null;
+        
       // JDBC driver name and database URL
-        final String DB_URL="jdbc:mysql://localhost/inf124grp17";
+        final String DB_URL="jdbc:mysql://sylvester-mccoy-v3.ics.uci.edu/inf124grp17";
 
       //  Database credentials
-        final String USER = "root";
-        final String PASS = "";
+        final String USER = "inf124grp17";
+        final String PASS = "4ru&RuHU";
 
         try{
         // Register JDBC driver
@@ -74,10 +54,11 @@ public class SessionTracking extends HttpServlet {
          Logger.getLogger(Products.class.getName()).log(Level.SEVERE, null, ex);
          
         }
+     return conn;
      
     }
     
-    private void databaseDisconnect()
+    private void databaseDisconnect(Connection conn)
     {
         try {
             conn.close();
@@ -134,39 +115,43 @@ public class SessionTracking extends HttpServlet {
             try{
                 Statement stmt; 
                 ResultSet rs;
+     
+                //establishes connection
+                Connection conn = databaseConnect();
 
-                synchronized (mutex)
-                {            // Execute SQL query to get all the watch info from the db
-                    stmt = conn.createStatement();
-                    String sql;
-                    rs = null; 
+                // Execute SQL query to get all the watch info from the db
+                stmt = conn.createStatement();
+                String sql;
+                rs = null; 
 
-                    out.println("<table align = 'center'>");
+                out.println("<table align = 'center'>");
 
-                    for(int i = 0; i < visitedIds.size() && i < 2; i++)
-                        out.println("<th></th>");
+                for(int i = 0; i < visitedIds.size() && i < 2; i++)
+                    out.println("<th></th>");
 
-                    out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
+                out.println("<th style=\"font-size: 30px\">Recently Visited</th>");
 
-                    out.println("<tr>");
+                out.println("<tr>");
 
-                    for(int i = 0; i < visitedIds.size(); i++){
+                for(int i = 0; i < visitedIds.size(); i++){
 
-                        sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
-                        rs = stmt.executeQuery(sql);
+                    sql = "SELECT * FROM product_descriptions WHERE id = " + visitedIds.get(i);
+                    rs = stmt.executeQuery(sql);
 
-                        //need to advance it to the first row
-                        rs.next();
+                    //need to advance it to the first row
+                    rs.next();
 
-                        out.println("<td class=\"item_cell\">");
-                        out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
-                        out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
-                        out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
-                        out.println("</a>");
-                        out.println("</td>");
+                    out.println("<td class=\"item_cell\">");
+                    out.println("<a href='ProductDescription?productID=" + rs.getString("id") + "' >");
+                    out.println("<img class = 'visited_image' src=" + rs.getString("image_path") + " alt=" + rs.getString("name") + ">  <br> ");
+                    out.println("<b>" + rs.getString("brand") + "</b> <br>" + rs.getString("name"));
+                    out.println("</a>");
+                    out.println("</td>");
 
-                    }
                 }
+
+                databaseDisconnect(conn);
+                
                 out.println("</tr>");
                 out.println("</table>");
 
